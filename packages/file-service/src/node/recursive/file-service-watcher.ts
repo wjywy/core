@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/order
 import paths from 'path';
 
 import ParcelWatcher from '@parcel/watcher';
@@ -22,8 +23,9 @@ import {
 import { FileChangeType, FileSystemWatcherClient, IFileSystemWatcherServer, INsfw, WatchOptions } from '../../common';
 import { FileChangeCollection } from '../file-change-collection';
 
+// 作用是?
 export interface WatcherOptions {
-  excludesPattern: ParsedPattern[];
+  excludesPattern: ParsedPattern[]; // 函数，返回布尔值
   excludes: string[];
 }
 
@@ -51,9 +53,12 @@ export class FileSystemWatcherServer implements IFileSystemWatcherServer {
 
   protected readonly toDispose = new DisposableCollection(Disposable.create(() => this.setClient(undefined)));
 
+  // 收集发生改变的文件
   protected changes = new FileChangeCollection();
 
   @Autowired(ILogServiceManager)
+
+  // 一个symbol关键字，内容是ILogServiceManager
   private readonly loggerManager: ILogServiceManager;
 
   private logger: ILogService;
@@ -102,6 +107,7 @@ export class FileSystemWatcherServer implements IFileSystemWatcherServer {
       if (stat && stat.isDirectory()) {
         watchPath = basePath;
       } else {
+        // lookup, 向上查找存在的目录
         watchPath = await this.lookup(basePath);
       }
     } else {
@@ -284,6 +290,7 @@ export class FileSystemWatcherServer implements IFileSystemWatcherServer {
     return disposables;
   }
 
+  // 根据watchId注销对应的文件监听
   unwatchFileChanges(watcherId: number): Promise<void> {
     const watcher = this.WATCHER_HANDLERS.get(watcherId);
     if (watcher) {
