@@ -44,6 +44,7 @@ import {
   handleError,
 } from '../common/';
 
+import { NoRecursiveFileSystemWatcher } from './no-recursive/file-node-watcher-lib';
 import { FileSystemWatcherServer } from './recursive/file-service-watcher';
 import { getFileType } from './shared/file-type';
 import { UnRecursiveFileSystemWatcher } from './un-recursive/file-service-watcher';
@@ -134,7 +135,9 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
   async watch(uri: UriComponents, options?: { excludes?: string[] }): Promise<number> {
     await this.whenReady;
     const _uri = Uri.revive(uri);
-    const id = await this.watcherServer.watchFileChanges(_uri.toString(), {
+    // eslint-disable-next-line no-console
+    console.log(options, 'optionsOptionsOptions');
+    const id = await this.watcherServer.watchFileChanges('d:\\front_many\\firstIssue\\core\\tools\\workspace\\front', {
       excludes: options?.excludes ?? [],
     });
     const disposable = {
