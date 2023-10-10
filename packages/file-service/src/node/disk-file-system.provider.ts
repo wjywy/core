@@ -67,6 +67,8 @@ export interface IWatcher {
 
 @Injectable({ multiple: true })
 export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvider> implements IDiskFileProvider {
+  private recursive: boolean;
+
   private fileChangeEmitter = new Emitter<FileChangeEvent>();
 
   private watcherServer: UnRecursiveFileSystemWatcher | FileSystemWatcherServer;
@@ -97,6 +99,7 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
     this.logger = this.loggerManager.getLogger(SupportLogNamespace.Node);
     this.recursive = recursive;
     this.initWatchServer();
+    this.recursive = recursive;
   }
 
   get whenReady() {
@@ -135,9 +138,7 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
   async watch(uri: UriComponents, options?: { excludes?: string[] }): Promise<number> {
     await this.whenReady;
     const _uri = Uri.revive(uri);
-    // eslint-disable-next-line no-console
-    console.log(options, 'optionsOptionsOptions');
-    const id = await this.watcherServer.watchFileChanges('d:\\front_many\\firstIssue\\core\\tools\\workspace\\front', {
+    const id = await this.watcherServer.watchFileChanges(_uri.toString(), {
       excludes: options?.excludes ?? [],
     });
     const disposable = {
