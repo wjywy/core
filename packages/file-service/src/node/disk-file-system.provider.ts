@@ -66,8 +66,6 @@ export interface IWatcher {
 
 @Injectable({ multiple: true })
 export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvider> implements IDiskFileProvider {
-  private recursive: boolean;
-
   private fileChangeEmitter = new Emitter<FileChangeEvent>();
 
   private watcherServer: UnRecursiveFileSystemWatcher | FileSystemWatcherServer;
