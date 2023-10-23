@@ -44,7 +44,6 @@ import {
   handleError,
 } from '../common/';
 
-import { UnRecursiveFileSystemWatcher } from './no-recursive/file-node-watcher-lib';
 import { FileSystemWatcherServer } from './recursive/file-service-watcher';
 import { getFileType } from './shared/file-type';
 import { UnRecursiveFileSystemWatcher } from './un-recursive/file-service-watcher';
