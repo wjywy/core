@@ -96,6 +96,7 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
     this.logger = this.loggerManager.getLogger(SupportLogNamespace.Node);
     this.recursive = recursive;
     this.initWatchServer();
+    this.logger.log(recursive, 'startStartStart');
     this.recursive = recursive;
   }
 
@@ -374,8 +375,11 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
     }
     this.watcherServerDisposeCollection = new DisposableCollection();
     if (this.recursive) {
+      this.logger.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
       this.watcherServer = this.injector.get(FileSystemWatcherServer, [excludes]);
     } else {
+      this.logger.log(this.recursive, 'lllllllllllll');
+      this.logger.log('bbbbbbbbbbbbbbbbbbbbbbb');
       this.watcherServer = this.injector.get(UnRecursiveFileSystemWatcher, [excludes]);
     }
     this.watcherServer.setClient({
