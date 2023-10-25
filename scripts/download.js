@@ -1,16 +1,14 @@
-// eslint-disable-next-line import/order
-const os = require('os');
 const path = require('path');
 const querystring = require('querystring');
-const pipeline = require('stream').pipeline;
-
-const retry = require('async-retry');
-const awaitEvent = require('await-event');
+const rimraf = require('rimraf');
+const fs = require('fs-extra');
 const compressing = require('compressing');
 const log = require('debug')('InstallExtension');
-const fs = require('fs-extra');
+const os = require('os');
 const nodeFetch = require('node-fetch');
-const rimraf = require('rimraf');
+const awaitEvent = require('await-event');
+const pipeline = require('stream').pipeline;
+const retry = require('async-retry');
 const marketplaceType = process.env.MARKETPLACE ?? 'opentrs';
 
 // 放置 extension 的目录
@@ -70,7 +68,6 @@ async function downloadExtension(url, namespace, extensionName) {
   const res = await nodeFetch(url, { timeout: 100000, headers });
 
   if (res.status !== 200) {
-    // eslint-disable-next-line no-throw-literal
     throw {
       message: `${res.status} ${res.statusText}`,
     };
