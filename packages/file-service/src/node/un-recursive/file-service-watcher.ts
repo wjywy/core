@@ -118,10 +118,7 @@ export class UnRecursiveFileSystemWatcher implements IFileSystemWatcherServer {
             // 监听的目录如果是文件夹，那么只对其下面的文件改动做出响应
             if (docChildren.has(changeFileName)) {
               if ((type === 'rename' || type === 'change') && changeFileName === filename) {
-<<<<<<<< HEAD:packages/file-service/src/node/un-recursive/file-service-watcher.ts
-========
                 const fileExists = fs.existsSync(changePath);
->>>>>>>> 4a48b130d (fix: modify file problems in linux):packages/file-service/src/node/un-recursive/file-node-watcher.ts
                 if (fileExists) {
                   this.pushDeleted(changePath);
                 }
