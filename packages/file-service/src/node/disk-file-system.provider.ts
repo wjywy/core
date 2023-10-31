@@ -96,8 +96,6 @@ export class DiskFileSystemProvider extends RPCService<IRPCDiskFileSystemProvide
     this.logger = this.loggerManager.getLogger(SupportLogNamespace.Node);
     this.recursive = recursive;
     this.initWatchServer();
-    this.recursive = recursive;
-    this.initWatchServer();
   }
 
   get whenReady() {
