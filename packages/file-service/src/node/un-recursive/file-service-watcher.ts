@@ -120,6 +120,9 @@ export class UnRecursiveFileSystemWatcher implements IFileSystemWatcherServer {
               if ((type === 'rename' || type === 'change') && changeFileName === filename) {
                 const fileExists = fs.existsSync(changePath);
                 if (fileExists) {
+                  this.pushUpdated(changePath);
+                } else {
+                  docChildren.delete(changeFileName);
                   this.pushDeleted(changePath);
                 }
               }
