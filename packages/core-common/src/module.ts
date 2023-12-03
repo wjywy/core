@@ -9,6 +9,11 @@ interface FrontService {
   servicePath: string;
 }
 
+/**
+ * token: 唯一标识
+ * clientToken：客户端连接标识
+ * servicePath：服务路径
+ */
 export interface BackService {
   token?: Token;
   clientToken?: Token;

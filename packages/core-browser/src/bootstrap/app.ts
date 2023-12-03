@@ -71,6 +71,7 @@ import { electronEnv } from '../utils';
 
 import { IClientAppOpts, IconInfo, IconMap, IPreferences, LayoutConfig, ModuleConstructor } from './app.interface';
 import { renderClientApp, IAppRenderer } from './app.view';
+// 分别是23行和65行
 import { createClientConnection2, bindConnectionService } from './connection';
 import { injectInnerProviders } from './inner-providers';
 import { injectElectronInnerProviders } from './inner-providers-electron';
@@ -96,6 +97,7 @@ export class ClientApp implements IClientApp, IDisposable {
   private keybindingRegistry: KeybindingRegistry;
   private keybindingService: KeybindingService;
   private modules: ModuleConstructor[];
+  // 贡献机制吗这是
   private contributionsProvider: ContributionProvider<ClientAppContribution>;
   private nextMenuRegistry: MenuRegistryImpl;
   private stateService: ClientAppStateService;
@@ -222,14 +224,14 @@ export class ClientApp implements IClientApp, IDisposable {
         await bindConnectionService(this.injector, this.modules, createElectronClientConnection());
       } else if (type === 'web') {
         await createClientConnection2(
-          this.injector,
+          this.injector, //
           this.modules,
-          this.connectionPath,
+          this.connectionPath, // 连接路径
           () => {
             this.onReconnectContributions();
           },
-          this.connectionProtocols,
-          this.config.clientId,
+          this.connectionProtocols, // 连接协议
+          this.config.clientId, // 配置中的客户端id
         );
 
         this.logger = this.getLogger();
