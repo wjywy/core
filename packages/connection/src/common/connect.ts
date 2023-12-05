@@ -116,11 +116,11 @@ export function getRPCService<T = void>(name: string, center: RPCServiceCenter):
 }
 
 export class RPCServiceCenter {
-  public uid: string;
-  public rpcProxy: RPCProxy[] = [];
-  public serviceProxy: ServiceProxy[] = [];
-  private connection: Array<MessageConnection> = [];
-  private serviceMethodMap = { client: undefined };
+  public uid: string; // 服务中心的唯一标识
+  public rpcProxy: RPCProxy[] = []; // 保存所有的rpcProxy对象
+  public serviceProxy: ServiceProxy[] = []; // 保存所有的服务代理对象
+  private connection: Array<MessageConnection> = []; // 保存所有的消息连接对象
+  private serviceMethodMap = { client: undefined }; // 保存服务名和对应RPC服务方法的映射
 
   private createService: string[] = [];
   private getService: string[] = [];
@@ -137,6 +137,7 @@ export class RPCServiceCenter {
     this.logger = logger || console;
   }
 
+  // 注册服务的方法，接受服务名和服务类型
   registerService(serviceName: string, type: ServiceType): void {
     if (type === ServiceType.Service) {
       this.createService.push(serviceName);
@@ -148,6 +149,7 @@ export class RPCServiceCenter {
     }
   }
 
+  // 返回一个promise对象，该promise在连接建立完成时被解析
   when() {
     return this.connectionPromise;
   }
@@ -158,7 +160,9 @@ export class RPCServiceCenter {
     }
     this.connection.push(connection);
 
+    // 创建并添加一个"RPCProxy"对象，通过该对象监听连接
     const rpcProxy = new RPCProxy(this.serviceMethodMap, this.logger);
+
     rpcProxy.listen(connection);
     this.rpcProxy.push(rpcProxy);
 
@@ -166,6 +170,7 @@ export class RPCServiceCenter {
     this.serviceProxy.push(serviceProxy);
   }
 
+  // 移除服务
   removeConnection(connection: MessageConnection) {
     const removeIndex = this.connection.indexOf(connection);
     if (removeIndex !== -1) {
@@ -176,6 +181,7 @@ export class RPCServiceCenter {
 
     return removeIndex !== -1;
   }
+
   onRequest(name: string, method: RPCServiceMethod) {
     if (!this.connection.length) {
       this.serviceMethodMap[name] = method;
@@ -185,6 +191,7 @@ export class RPCServiceCenter {
       });
     }
   }
+
   async broadcast(name: string, ...args): Promise<any> {
     const broadcastResult = this.serviceProxy.map((proxy) => proxy[name](...args));
     if (!broadcastResult || broadcastResult.length === 0) {

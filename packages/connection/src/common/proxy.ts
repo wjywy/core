@@ -30,6 +30,9 @@ export class ProxyClient {
     return new Proxy(
       {},
       {
+        // 检查访问的属性是否包含在reservedWords数组中或是否为一个符号。
+        // 如果任一条件为真，则返回一个已解决的Promise。
+        // 这意味着访问保留字或符号属性将始终返回一个已解决的Promise
         get: (target, prop: string | symbol) => {
           if (this.reservedWords.includes(prop as string) || typeof prop === 'symbol') {
             return Promise.resolve();
@@ -46,6 +49,7 @@ interface IRPCResult {
   error: boolean;
   data: any;
 }
+
 export class RPCProxy {
   private connectionPromise: Promise<MessageConnection>;
   private connectionPromiseResolve: (connection: MessageConnection) => void;
